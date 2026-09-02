@@ -1,6 +1,6 @@
 {
     "useHead": false,
-    "timeout": "45s",
+    "timeout": "30s",
     "retryOn429": true,
     "retryCount": 3,
     "ignorePatterns": [
