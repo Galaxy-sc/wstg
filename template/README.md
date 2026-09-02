@@ -40,6 +40,10 @@ https://owaspai.org/
 
 https://www.hackerone.com/
 
+https://wwwaefavadvadv.hackerone.com/
+
+https://www.hackesdfsdfsbsbrone.com/
+
 https://www.hackerone.com/resources/reports/hacker-powered-security-report-2025
 
 https://www.bugcrowd.com/
