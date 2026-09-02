@@ -79,6 +79,8 @@ https://en.wikipedia.org/wiki/Web_search_engine#Market_share
 https://en.wikipedia.org/wiki/Proxy_server#Reverse_proxies
 https://en.wikipedia.org/wiki/Content_delivery_network#Notable_content_delivery_service_providers
 https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+
+
 https://github.com/EdOverflow/bugbounty-cheatsheet
 https://github.com/scriptingxss/owasp-fstm
 https://github.com/ovr/phpsa/blob/master/docs/05_Analyzers.md#function_string_formater
