@@ -25,7 +25,7 @@ This ensures merged tests are explicitly identifiable while keeping the Markdown
 https://cheatsheetseries.owasp.org/
 
 https://cheatsheetseries.owasp.org/cheatsheets/Vulnerability_Disclosure_Cheat_Sheet.html
-
+  
 https://owasp.org/www-project-bug-logging-tool/
 
 https://owasp.org/www-project-ai-testing-guide/
@@ -33,7 +33,7 @@ https://owasp.org/www-project-ai-testing-guide/
 https://owasp.org/www-project-web-security-testing-guide/
 
 https://owasp.org/www-project-mobile-security-testing-guide/
-
+  
 https://genai.owasp.org/initiatives/top-10-for-llm-and-genai/
 
 https://owaspai.org/
