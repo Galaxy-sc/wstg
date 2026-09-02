@@ -3,7 +3,7 @@ name: Markdown Link Check
 on:
   pull_request:
     branches:
-    - master
+    - patch-13
     paths:
     - '**.md'
     - '!.github/**'
@@ -23,8 +23,8 @@ jobs:
     - name: Checkout Base
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
-        repository: OWASP/wstg
-        ref: master
+        repository: Galaxy-sc/wstg
+        ref: patch-13
         path: base
         persist-credentials: false
     - name: Setup Node
