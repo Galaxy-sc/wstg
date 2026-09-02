@@ -134,6 +134,8 @@ https://developers.google.com/web/tools/chrome-devtools/storage/cache
 
 https://www.w3.org/TR/cors/
 
+https://www.wkajbvakjbdvuqbevekajbsdjfbqkejfbqkjegbqkbvuqefbkjbafdkjbakbdjf.org/TR/cors/
+
 https://httpd.apache.org/docs/current/mod/mod_headers.html
 
 https://en.wikipedia.org/wiki/Web_search_engine#Market_share
