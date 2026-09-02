@@ -142,7 +142,7 @@ https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
 
 https://github.com/EdOverflow/bugbounty-cheatsheet
 
-https://github.com/scriptingxss/owasp-fstm
+https://github.com/scriptingxss/owasp-fstm 
 
 https://github.com/ovr/phpsa/blob/master/docs/05_Analyzers.md#function_string_formater
 
