@@ -70,6 +70,23 @@ Examples include:
 - Triggering order shipment or fulfillment actions without a confirmed payment step.
 - Accessing restricted or premium features by directly invoking activation or enablement endpoints.
 
+### Method 4: Bypassing Workflows Through AI Assistants and Tool Calls
+
+Applications increasingly expose backend operations (such as issuing refunds, canceling orders, modifying subscriptions, or approving requests) as callable tools for Artificial Intelligence (AI) support bots and copilots. While standard web forms enforce multi-step validation, approval gates, or prerequisite checks in the UI and dedicated endpoints, AI tool integrations sometimes invoke backend state-changing functions directly and rely on natural-language system prompts rather than server-side workflow enforcement.
+
+Common AI-assisted workflow bypass patterns include:
+
+- Triggering terminal actions (such as refunds, account credits, or order cancellations) without completing required verification or approval steps
+- Convincing the assistant to invoke privileged or exception-handling tools through social engineering or authority claims in natural language
+- Splitting or rephrasing restricted actions across multiple conversational turns to bypass prompt-level guardrails
+
+Test Steps:
+
+- Identify all state-changing actions and backend tools accessible to the AI assistant (for example, customer support bots or workflow copilots).
+- Map the prerequisites and business rules enforced when performing those same actions through the standard web UI.
+- Attempt to instruct the assistant to execute the final state transition directly without satisfying prerequisites (for example, requesting an immediate full refund on an ineligible order or bypassing a manager approval step).
+- Verify whether the backend enforces workflow state, eligibility rules, and role checks server-side regardless of whether the request originates from the web UI or an AI tool call.
+
 ## Related Test Cases
 
 - [Directory Traversal and File Include](../09-Authorization/01-Directory_Traversal_File_Include.md)
@@ -92,3 +109,5 @@ The application must be self-aware and have checks in place ensuring that the us
 
 - [OWASP Abuse Case Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html)
 - [CWE-840: Business Logic Errors](https://cwe.mitre.org/data/definitions/840.html)
+- [OWASP Top 10 for Large Language Model Applications (LLM06: Excessive Agency)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [OWASP AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)

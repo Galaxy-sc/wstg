@@ -195,6 +195,22 @@ Many other file formats also have specific security concerns that need to be tak
 
 The permitted file formats should be carefully reviewed for potentially dangerous functionality, and where possible attempts should be made to exploit this during testing.
 
+#### Files Processed by AI Pipelines
+
+Standard upload defenses, such as extension allowlists, magic-byte validation, and anti-malware scanning, verify that a file is structurally valid and free of known malware. However, when a web application extracts text, Optical Character Recognition (OCR) content, or metadata from uploaded files (such as PDF or DOCX resumes, invoices, or support attachments) and passes it to an Artificial Intelligence (AI) component for summarization, indexing, or automated decision-making, a structurally benign file can still carry payloads that manipulate downstream web application behavior.
+
+Depending on how the application consumes the AI output, an uploaded file containing embedded instructions (indirect prompt injection) can lead to concrete web vulnerabilities:
+
+- **Business logic manipulation:** Influencing automated screening, scoring, categorization, or approval workflows (for example, embedding hidden instructions in an uploaded resume or claim document).
+- **Downstream injection:** Causing the AI pipeline to generate unsanitized HTML or Markdown stored and rendered in staff or administrative dashboards (see [Stored Cross Site Scripting](../11-Injection/02-Stored_Cross_Site_Scripting.md)).
+- **Outbound requests:** Directing an AI pipeline or document processor with browsing or link-fetching capabilities to request internal or attacker-controlled URLs (see [Server-Side Request Forgery](../11-Injection/18-Server-Side_Request_Forgery.md)).
+
+To test for this condition:
+
+1. Identify file upload endpoints whose contents are parsed, summarized, or evaluated by an AI feature rather than merely stored for download.
+2. Prepare a structurally valid file of an allowed type (such as a PDF or DOCX) containing test instructions in the document body, visually hidden text (such as white text on a white background), or document metadata (for example, PDF `Author` or `Subject` fields set with `exiftool`).
+3. Upload the file and verify whether it passes standard upload filters and influences the downstream application state, renders unescaped output in a web view, or triggers an outbound request to a controlled endpoint.
+
 ### Source Code Review
 
 When there is file upload feature supported, the following API/methods are common to be found in the source code.
@@ -232,3 +248,6 @@ Fully protecting against malicious file upload can be complex, and the exact ste
 - [Implementing Secure File Upload](https://infosecauditor.wordpress.com/tag/malicious-file-upload/)
 - [Metasploit Generating Payloads](https://www.offsec.com/metasploit-unleashed/generating-payloads/)
 - [List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
+- [OWASP Top 10 for Large Language Model Applications (LLM01: Prompt Injection)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [OWASP LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+- [Greshake et al.: "Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection"](https://arxiv.org/abs/2302.12173)

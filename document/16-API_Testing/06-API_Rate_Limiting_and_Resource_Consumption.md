@@ -299,6 +299,17 @@ seq 1 200 | xargs -P 200 -I{} curl -s -o /dev/null -w "%{http_code} %{time_total
 
 Compare response codes and response times against the documented capacity of the API or a baseline measured at normal load. Insecure behavior: the API shows no connection throttling (no `429` or `503` responses) and response times remain stable at volumes far exceeding documented limits, indicating absent per-client connection caps.
 
+### Test AI Endpoint Token and Compute Consumption
+
+APIs backed by Artificial Intelligence (AI) models, document summarizers, or multi-step agents consume significantly more compute and third-party API quota per request than standard CRUD endpoints. Standard request-per-minute (RPM) rate limits alone may not prevent resource exhaustion or financial abuse (denial of wallet) if each individual request can trigger unbounded input processing, maximum-length output generation, or repeated backend tool calls.
+
+In an agreed test window or staging environment, test whether the API enforces compute-aware limits:
+
+- **Input size and context bounds:** Submit increasingly large prompts, conversation histories, or attached documents to verify whether the server enforces strict token or character limits before invoking the model.
+- **Output and generation caps:** Instruct the model to produce excessively long outputs (such as repeating text or generating large tables) and verify whether server-side `max_tokens` limits and execution timeouts are enforced.
+- **Agent tool-call loops:** For agentic endpoints that can invoke backend tools or web fetches iteratively, test whether a single request can trigger an unbounded loop of tool calls without a server-side step cap.
+- **Per-user quota enforcement:** Verify that token or compute quotas are tied to authenticated user or tenant accounts rather than client-controlled headers or disposable anonymous sessions.
+
 ## Related Test Cases
 
 - [GraphQL (WSTG-APIT-99)](99-GraphQL.md)
@@ -338,3 +349,5 @@ Compare response codes and response times against the documented capacity of the
 - [OWASP API Security Top 10 - API4:2023 Unrestricted Resource Consumption](https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/)
 - [OWASP REST Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html)
 - [OWASP GraphQL Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html)
+- [OWASP Top 10 for Large Language Model Applications (LLM10: Unbounded Consumption)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [OWASP AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)

@@ -164,6 +164,16 @@ APIs may leak sensitive information through error responses, particularly when r
 
 Trigger error responses by sending malformed input, invalid authentication, or requests for non-existent resources, and inspect the full response including headers.
 
+### Inspect AI and RAG API Responses
+
+Applications powered by Artificial Intelligence (AI) and Retrieval-Augmented Generation (RAG) often display only a concise synthesized answer in the user interface, while the underlying API response returns the raw retrieved documents, text chunks, and database records used to generate that answer. If the API serializes full document objects or vector-store metadata directly to the client, sensitive information hidden from the UI can be exposed in the raw JSON or streaming response.
+
+To test for excessive data exposure in AI and RAG endpoints:
+
+1. Intercept responses from chat, semantic search, or summarization endpoints (including Server-Sent Events or WebSocket streams) using a proxy or browser Developer Tools.
+2. Compare the text displayed in the UI against the full response payload, inspecting fields such as `sources`, `citations`, `context`, `chunks`, or `metadata`.
+3. Look for leaked internal attributes (such as internal file paths, storage bucket URLs, author emails, internal comments, access-control tags, or unredacted record fields) that are returned by the API even when omitted from the rendered answer.
+
 ## Remediation
 
 - **Implement server-side response filtering.** Never return raw database objects or full model serializations in API responses. Explicitly define response schemas that include only the fields the client needs for each endpoint and context.
@@ -187,3 +197,5 @@ Trigger error responses by sending malformed input, invalid authentication, or r
 - [OWASP API Security Top 10: API3:2023 Broken Object Property Level Authorization](https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/)
 - [OWASP ASVS V5: API and Web Service](https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x13-V4-API-and-Web-Service.md)
 - [Insecure Direct Object References (IDOR)](../09-Authorization/04-Insecure_Direct_Object_References.md)
+- [OWASP Top 10 for Large Language Model Applications (LLM02: Sensitive Information Disclosure)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [OWASP AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)

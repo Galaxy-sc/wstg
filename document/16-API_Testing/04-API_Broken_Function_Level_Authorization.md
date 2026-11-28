@@ -60,6 +60,17 @@ In **GraphQL APIs**, test if a user can invoke functions restricted to higher-pr
 
 Example: `mutation { deleteUser(id: "12345") { success } }`.
 
+### Test for BFLA via AI Agents and Tool-Calling APIs
+
+Applications that integrate Artificial Intelligence (AI) assistants or agents frequently expose internal REST or GraphQL endpoints as callable tools (function calling). A common misconfiguration occurs when administrative or high-privilege endpoints (such as `/api/admin/deleteUser` or `/api/admin/promoteUser`) are registered alongside standard user tools using a shared, privileged service token, and the application relies on the AI's system prompt rather than server-side Role-Based Access Control (RBAC) to prevent lower-privilege users from invoking them.
+
+To test for BFLA through AI tool integrations:
+
+- Log in as a lower-privilege user (for example, a regular user or guest) and identify what backend actions or tools the AI assistant can invoke.
+- Instruct the assistant using natural language to execute administrative or role-restricted functions (for example, listing all user accounts, modifying another user's role, or deleting a user).
+- Test alternative phrasings or multi-turn prompts to distinguish prompt-level refusals from genuine server-side authorization checks.
+- Verify that the underlying API endpoint enforces the authenticated user's role on the server-side and returns `403 Forbidden` (rather than executing the privileged function under the AI backend's service token).
+
 ## Indicators of BFLA
 
 - **Successful exploitation**: If a lower-privilege user (e.g., regular user or guest) can execute high-privilege functions or perform actions reserved for other roles (e.g., admin).
@@ -86,3 +97,6 @@ To prevent BFLA vulnerabilities, implement the following mitigations:
 - [OWASP API Security Top 10: BFLA](https://owasp.org/API-Security/editions/2023/en/0xa5-broken-function-level-authorization/)
 - [Privilege Escalation](../09-Authorization/03-Privilege_Escalation.md)
 - [GraphQL](99-GraphQL.md)
+- [OWASP Top 10 for Large Language Model Applications (LLM06: Excessive Agency)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [OWASP AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
+- [PortSwigger Web Security Academy: Web LLM attacks](https://portswigger.net/web-security/llm-attacks)

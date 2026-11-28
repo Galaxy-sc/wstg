@@ -822,6 +822,19 @@ For example, if a web application allows users to enter a discount code as part 
 
 This technique could also be used to determine exact discount codes through increasingly specific queries (such as `a%`, `b%`, `ba%`, etc).
 
+### AI-Generated SQL Queries (Text-to-SQL)
+
+Analytics dashboards, reporting portals, and Software-as-a-Service (SaaS) web applications increasingly include Artificial Intelligence (AI) assistants that translate natural-language questions into SQL queries and execute them against the backend database. Even when classic HTTP parameters are properly parameterized, trusting AI-generated SQL without strict server-side controls reintroduces SQL injection through natural-language input.
+
+Common flaws in Text-to-SQL integrations include executing queries with overly privileged database credentials (such as write-enabled or cross-tenant accounts), omitting server-side row-level or tenant filtering, or relying on fragile blocklists (for example, rejecting only `DROP` or `DELETE`) instead of read-only views and parameterized query templates.
+
+To test for this condition:
+
+1. Identify chat, search, or reporting features that answer questions using live database data or display generated SQL queries.
+2. Submit natural-language prompts requesting data outside your authorization scope (for example, asking for other tenants' records, user tables, or database schema metadata such as `information_schema` or `pg_catalog`).
+3. Attempt to coerce the model into emitting `UNION SELECT`, subqueries, stacked queries, or write operations (`UPDATE`, `INSERT`, `DELETE`) by framing the request as a debugging, auditing, or formatting task.
+4. Verify whether the backend enforces least-privilege read-only database permissions, tenant isolation, and strict table/column allowlists server-side rather than relying on the AI prompt to restrict the generated SQL.
+
 ## Remediation
 
 - To secure the application from SQL injection vulnerabilities, refer to the [SQL Injection Prevention CheatSheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html).
@@ -841,6 +854,8 @@ For generic input validation security, refer to the [Input Validation CheatSheet
 - [A05:2025 Injection](https://owasp.org/Top10/2025/A05_2025-Injection/)
 - [SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
 - [SQL Injection](https://www.w3schools.com/sql/sql_injection.asp)
+- [OWASP Top 10 for Large Language Model Applications (LLM05: Improper Output Handling and LLM06: Excessive Agency)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [PortSwigger Web Security Academy: Web LLM attacks](https://portswigger.net/web-security/llm-attacks)
 
 Technology-specific Testing Guide pages have been created for the following DBMSs:
 

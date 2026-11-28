@@ -89,6 +89,19 @@ For this reason, automated testing will not detect areas that may be susceptible
 
 Manual testing should therefore be undertaken and can be done by examining areas in the code where parameters are referred to that may be useful to an attacker. Examples of such areas include places where code is dynamically written to the page and elsewhere where the DOM is modified or even where scripts are directly executed.
 
+### Client-Side Rendering of AI-Generated Responses
+
+Modern web applications frequently embed Artificial Intelligence (AI) chat widgets and copilots that stream responses to the browser (via `fetch`, Server-Sent Events, or WebSockets) and convert Markdown or rich text into HTML on the client-side. If the client-side parser converts untrusted AI output and injects it into dangerous DOM sinks (such as `innerHTML`, `outerHTML`, or `dangerouslySetInnerHTML`) without strict HTML sanitization (for example, DOMPurify) and URL scheme validation, attackers can trigger DOM-based XSS immediately in the victim's browser without the payload ever being stored in a database.
+
+This is particularly high-impact when the AI assistant processes untrusted third-party content on the user's behalf (such as summarizing an external web page, email, or shared document) containing indirect prompt injection instructions that cause the model to emit malicious HTML or Markdown links.
+
+To test for this condition:
+
+- Identify client-side components that render AI-generated text, Markdown, code blocks, or tables dynamically in the browser.
+- Inspect the client-side JavaScript to determine which Markdown/HTML rendering library is used and whether output is passed through a sanitizer before reaching a DOM sink.
+- Prompt the assistant directly (or supply an external page or document for the assistant to summarize), instructing it to output raw HTML event handlers (such as `<img src=x onerror=alert(document.domain)>`) or dangerous Markdown links (such as `[Click here](javascript:alert(document.domain))`).
+- Observe whether the payload executes in the DOM when rendered or clicked, and test whether alternative Markdown syntax (such as reference-style links, HTML entities, or nested tags) bypasses weak client-side filters.
+
 ## Remediation
 
 For measures to prevent DOM-based XSS, see the [DOM-based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html).
@@ -96,3 +109,5 @@ For measures to prevent DOM-based XSS, see the [DOM-based XSS Prevention Cheat S
 ## References
 
 - [DomXSSWiki](https://github.com/wisec/domxsswiki/wiki/)
+- [OWASP Top 10 for Large Language Model Applications (LLM05: Improper Output Handling)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [PortSwigger Web Security Academy: Web LLM attacks](https://portswigger.net/web-security/llm-attacks)

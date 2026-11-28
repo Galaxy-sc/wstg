@@ -168,6 +168,16 @@ curl http://attacker.com
 nslookup attacker.com
 ```
 
+### AI-Generated Commands and Tool Arguments
+
+Web applications that integrate Artificial Intelligence (AI) assistants into administrative dashboards, DevOps portals, or automated file-processing pipelines sometimes pass AI-generated arguments (or entire shell commands) to server-side OS command execution APIs. Even when the user cannot reach the command execution endpoint directly, natural-language prompts or untrusted content processed by the AI (indirect prompt injection) can cause the model to emit shell metacharacters or unintended flags.
+
+To test for this condition:
+
+- Identify AI-assisted features that interact with underlying system utilities (for example, diagnostic assistants, log analyzers, or document/media converters).
+- Supply natural-language inputs or filenames containing shell metacharacters (`;`, `|`, `&&`, `$(...)`, or backticks) and observe whether the AI passes them unescaped into a backend shell invocation.
+- Where the AI generates commands directly, attempt to coerce it into chaining an out-of-band or time-delay verification command (such as `sleep` or a DNS lookup to a controlled domain) and verify whether the backend enforces strict command allowlists and argument arrays rather than invoking a shell interpreter.
+
 ## Filter Evasion
 
 To prevent OS command injection, web developers often use filters. However, these filters are sometimes not properly implemented which allows attackers to bypass them.
@@ -303,3 +313,6 @@ The web application and its components should be running under strict permission
 
 - [CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')](https://cwe.mitre.org/data/definitions/78.html)
 - [ENV33-C. Do not call system()](https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152177)
+- [OWASP Top 10 for Large Language Model Applications (LLM05: Improper Output Handling and LLM06: Excessive Agency)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [OWASP AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
+- [PortSwigger Web Security Academy: Web LLM attacks](https://portswigger.net/web-security/llm-attacks)
